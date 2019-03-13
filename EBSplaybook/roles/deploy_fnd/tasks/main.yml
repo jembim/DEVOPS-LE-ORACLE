@@ -1,0 +1,6 @@
+---
+- name: Initializing Deployment
+  shell: ssh {{ ebs_user }}@{{ hostname }} "source {{ env_file }} run && sh {{ applmgr_home }}/EBSscripts/ebs_init.sh --ct={{ custom_top }}"
+
+- name: Deploy LDT files (FNDLOAD)
+  shell: ssh {{ ebs_user }}@{{ hostname }} "source {{ env_file }} run && sh {{ applmgr_home }}/EBSscripts/FNDLOAD.sh -u {{ apps_user }} --pw={{ apps_pass }}"

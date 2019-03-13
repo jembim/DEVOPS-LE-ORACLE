@@ -1,0 +1,18 @@
+---
+- name: Initializing Deployment
+  shell: ssh {{ ebs_user }}@{{ hostname }} "source {{ env_file }} run && sh {{ applmgr_home }}/EBSscripts/ebs_init.sh --ct={{ custom_top }}"
+
+- name: Deploy Database Objects (XXLE)
+  shell: ssh {{ ebs_user }}@{{ hostname }} "source {{ env_file }} run && sh {{ applmgr_home }}/EBSscripts/XXLELOAD.sh -h {{ db_hostname }} -p {{ db_port }} --dbu1={{ db_user1 }} --dbp1={{ db_pass1 }} --dbs={{ db_service_name }}"
+
+- name: Deploy Database Objects (APPS)
+  shell: ssh {{ ebs_user }}@{{ hostname }} "source {{ env_file }} run && sh {{ applmgr_home }}/EBSscripts/APPSLOAD.sh -h {{ db_hostname }} -p {{ db_port }} --dbu2={{ db_user2 }} --dbp2={{ db_pass2 }} --dbs={{ db_service_name }}"
+
+- name: Deploy LDT files (FNDLOAD)
+  shell: ssh {{ ebs_user }}@{{ hostname }} "source {{ env_file }} run && sh {{ applmgr_home }}/EBSscripts/FNDLOAD.sh -u {{ apps_user }} --pw={{ apps_pass }}"
+
+- name: Deploy REPORTS (XDO)
+  shell: ssh {{ ebs_user }}@{{ hostname }} "source {{ env_file }} run && sh {{ applmgr_home }}/EBSscripts/XDOLOAD1.sh -u {{ apps_user }} -h {{ db_hostname }} -p {{ db_port }} --pw={{ apps_pass }} --dbs={{ db_service_name }}"
+
+- name: Deploy WORKFLOW
+  shell: ssh {{ ebs_user }}@{{ hostname }} "source {{ env_file }} run && sh {{ applmgr_home }}/EBSscripts/WFLOAD.sh -u {{ apps_user }} --pw={{ apps_pass }}"

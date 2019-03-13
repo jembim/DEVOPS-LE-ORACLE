@@ -1,0 +1,10 @@
+---
+- name: Initializing Deployment
+  shell: ssh {{ ebs_user }}@{{ hostname }} "source {{ env_file }} run && sh {{ applmgr_home }}/EBSscripts/ebs_init.sh --ct={{ custom_top }}"
+
+- name: Deploy REPORTS (CP & DD)
+  shell: ssh {{ ebs_user }}@{{ hostname }} "source {{ env_file }} run && sh {{ applmgr_home }}/EBSscripts/XDOLOAD0.sh -u {{ apps_user }} --pw={{ apps_pass }}"
+
+- name: Deploy REPORTS (XDO)
+  shell: ssh {{ ebs_user }}@{{ hostname }} "source {{ env_file }} run && sh {{ applmgr_home }}/EBSscripts/XDOLOAD1.sh -u {{ apps_user }} -h {{ db_hostname }} -p {{ db_port }} --pw={{ apps_pass }} --dbs={{ db_service_name }}"
+  

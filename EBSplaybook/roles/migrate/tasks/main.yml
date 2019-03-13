@@ -1,0 +1,27 @@
+---
+- name: Change Cleanup Scripts Permission
+  file: 
+    path: "{{ item }}"
+    mode: 777
+  with_items: "{{ cleanup_scripts }}"
+
+- name: Change Automation Scripts Permission
+  file: 
+    path: "{{ item }}"
+    mode: 777
+  with_items: "{{ automation_scripts }}"
+
+- name: Copy Cleanup Scripts to Target Host
+  shell: rsync -ar -e "ssh -o StrictHostKeyChecking=no" --rsync-path="mkdir -p {{ applmgr_home }}/cleanup && rsync" cleanup/* {{ ebs_user }}@{{ hostname }}:{{ applmgr_home }}/cleanup/
+
+- name: Remove Old Scripts on Target Host
+  shell: ssh -o StrictHostKeyChecking=no {{ ebs_user }}@{{ hostname }} "source {{ env_file }} run && sh {{ applmgr_home }}/cleanup/rm_scripts.sh"
+
+- name: Remove Old Objects on Target Host
+  shell: ssh -o StrictHostKeyChecking=no {{ ebs_user }}@{{ hostname }} "source {{ env_file }} run && sh {{ applmgr_home }}/cleanup/rm_objects_env.sh"
+
+- name: Copy Deployment Scripts to Target Host
+  shell: rsync -ar -e "ssh -o StrictHostKeyChecking=no" --rsync-path="mkdir -p {{ applmgr_home }}/EBSscripts && rsync" EBSscripts/* {{ ebs_user }}@{{ hostname }}:{{ applmgr_home }}/EBSscripts/
+
+- name: Copy EBS Objects to Target Host
+  shell: rsync -ar -e "ssh -o StrictHostKeyChecking=no" --rsync-path="mkdir -p {{ applmgr_home }}/XXLE && rsync" {{ object_repo_dir }}/XXLE/* {{ ebs_user }}@{{ hostname }}:{{ applmgr_home }}/XXLE/

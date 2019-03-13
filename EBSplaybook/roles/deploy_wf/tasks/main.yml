@@ -1,0 +1,7 @@
+---
+- name: Initializing Deployment
+  shell: ssh {{ ebs_user }}@{{ hostname }} "source {{ env_file }} run && sh {{ applmgr_home }}/EBSscripts/ebs_init.sh --ct={{ custom_top }}"
+
+- name: Deploy WORKFLOW
+  shell: ssh {{ ebs_user }}@{{ hostname }} "source {{ env_file }} run && sh {{ applmgr_home }}/EBSscripts/WFLOAD.sh -u {{ apps_user }} --pw={{ apps_pass }}"
+  

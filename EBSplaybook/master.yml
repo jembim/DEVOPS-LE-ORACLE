@@ -1,0 +1,7 @@
+---
+- hosts: "localhost"
+  connection: local
+  roles:
+    - clone
+    - migrate
+    - deploy_{{ object }}

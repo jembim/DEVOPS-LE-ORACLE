@@ -1,0 +1,38 @@
+#EBS OBJECT
+object_repo_url: "http://{{ COMPASS_EBS_USER }}:{{ COMPASS_EBS_PASS }}@source.landsend.com/stash/scm/com/compass-ebs.git"
+object_repo_dir: "/tmp/EBS_objects"
+object: "all"
+
+#EBS ENV
+ebs_user: "applmgr"
+hostname: "leusvaebs01.leinternal.com"
+db_hostname: "leusndor-scan.leinternal.com"
+env_file: "/shvaebs1/apps/EBS/EBSapps.env"
+applmgr_home: "/home/applmgr"
+custom_top: "$APPL_TOP/ap/12.0.0/bin/"
+
+#SCRIPTS
+cleanup_scripts:
+  - cleanup/rm_objects_env.sh
+  - cleanup/rm_scripts.sh
+
+automation_scripts:
+  - EBSscripts/ebs_init.sh
+  - EBSscripts/XXLELOAD.sh
+  - EBSscripts/APPSLOAD.sh
+  - EBSscripts/FNDLOAD.sh
+  - EBSscripts/XDOLOAD0.sh
+  - EBSscripts/XDOLOAD1.sh
+  - EBSscripts/WFLOAD.sh
+  
+ansible_workspace: "EBSplaybook"
+
+#ENVIRONMENT CREDENTIALS
+apps_user: "apps"
+apps_pass: "visapp"
+db_user1: "ebs_temp"
+db_user2: "VIS_TEMP"
+db_pass1: "ebstemp"
+db_pass2: "vistemp123"
+db_port: "1530"
+db_service_name: "EBSVIS"

@@ -1,0 +1,12 @@
+---
+##RUN IN LOCAL
+- name: Remove Old EBS Objects
+  shell: sh {{ ansible_workspace }}/rm_objects.sh
+
+- name: Clone EBS Object Repository
+  git:
+    repo: "{{ object_repo_url }}"
+    dest: "{{ object_repo_dir }}"
+    version: develop
+    
+
